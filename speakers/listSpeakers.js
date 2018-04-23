@@ -2,7 +2,7 @@
 module.exports.list = (event, context, callback) => {
     var faker = require("faker");
     var _ = require("lodash");
-    var assignments = _.times(10, n => {
+    var assignments = _.times(100, n => {
       return {
         id: faker.random.number(1000, 2000),
         clientname: faker.name.jobTitle(),
