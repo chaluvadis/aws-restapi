@@ -10,6 +10,8 @@
   "author": "Surendra Chaluvadi <surendra.chaluvadi@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "faker": "4.1.0"
+    "aws-sdk": "2.227.1",
+    "faker": "4.1.0",
+    "uuid": "3.2.1"
   }
 }

@@ -1,32 +1,26 @@
 "use strict";
 module.exports.list = (event, context, callback) => {
-  var faker = require("faker");
-  var _ = require("lodash");
-  var speakers = _.times(100, n => {
-    var firstName = faker.name.firstName(),
-      lastName = faker.name.lastName(),
-      suffix = faker.name.suffix();
+  const client = require("./dynamodb");
 
-    return {
-      id: faker.random.number(1000, 2000),
-      firstName: firstName,
-      lastName: lastName,
-      suffix: suffix,
-      fullName: suffix + ". " + firstName + " " + lastName,
-      email: lastName + "." + firstName + "@speakers.com",
-      expertsIn: [
-        faker.random.arrayElement(["JavaScript", "TypeScript", "CoffeeScript"]),
-        faker.random.arrayElement(["Web Application", "Mobile Applications", "Single Page Application"]),
-        faker.random.arrayElement(["c#", "Asp.Net", "Asp.Net Core"]),
-      ],
-      city: faker.address.city(),
-      state: faker.address.state(),
-      profile: faker.image.imageUrl()
-    };
-  });
-  const response = {
-    statusCode: 200,
-    body: JSON.stringify(speakers)
+  const parms = {
+    TableName: "dev-speakers"
   };
-  callback(null, response);
+
+  client.scan(parms, (err, result) => {
+    if (err) {
+      console.error(err);
+      callback(null, {
+        statusCode: error.statusCode || 501,
+        headers: { "Content-Type": "text/plain" },
+        body: "Couldn't fetch the speakers."
+      });
+      return;
+    } else {
+      const response = {
+        statusCode: 200,
+        body: JSON.stringify(result.Items)
+      };
+      callback(null, response);
+    }
+  });
 };
